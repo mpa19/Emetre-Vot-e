@@ -24,6 +24,12 @@ public class PartyTest {
         Party party1 = new Party(null);
         party1.getName();
     }
+    
+    @Test
+    public void Test2() throws Exception{
+        Party party1 = new Party("hola");
+        party1.getName();
+    }
 
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
