@@ -22,13 +22,12 @@ public class PartyTest {
     @Test
     public void Test1() throws Exception{
         Party party1 = new Party(null);
-        party1.getName();
     }
     
     @Test
     public void Test2() throws Exception{
         Party party1 = new Party("hola");
-        party1.getName();
+        System.out.println(party1.getName());
     }
 
     // TODO add test methods here.
