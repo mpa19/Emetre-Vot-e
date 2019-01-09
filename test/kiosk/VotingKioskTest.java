@@ -5,8 +5,9 @@
  */
 package kiosk;
 
-import Service.Cens;
-import Service.ElectoralOrganism;
+import Service.Biometric;
+import Service.Serveis;
+import data.MailAdress;
 import data.NIF;
 import data.Party;
 import java.util.ArrayList;
@@ -19,10 +20,7 @@ import org.junit.Test;
  * @author Marc
  */
 public class VotingKioskTest {
-    
-    public VotingKioskTest() {
-    }
-    
+         
     @Test
     public void Test1() throws Exception{
         Party party1 = new Party("a");
@@ -46,20 +44,54 @@ public class VotingKioskTest {
         partys.add(party3);
         
         VoteCounter vc = new VoteCounter(partys);
-        Cens eO = new Cens(cens);
+        Serveis eO = new Serveis(cens);
         
         VotingKiosk vk = new VotingKiosk();
         vk.setVoteCounter(vc);
         vk.setElectoralOrganism(eO);
-        vk.setNIF(nif4);
-        vk.vote(party3);
-        
-        vk.setNIF(nif3);
-        vk.vote(party3);          
+        vk.setMailerService(eO);
+        vk.votingProcess(party3, nif4, null,false);        
+        vk.votingProcess(party3, nif3, null,false);  
     }
     
-    @Test //votar dos veces error!
+    @Test /* VoteError intento de votar 2 veces */
     public void Test2() throws Exception{
+        Party party1 = new Party("a");
+        Party party2 = new Party("b");
+        Party party3 = new Party("c");
+        
+        Set<Party> partys = new HashSet<Party>();
+        NIF nif1 = new NIF("1");
+        NIF nif2 = new NIF("2");
+        NIF nif3 = new NIF("3");
+        NIF nif4 = new NIF("4");
+        
+        MailAdress address = new MailAdress("marcperezarnaiz@gmail.com");
+        
+        ArrayList<NIF> cens = new ArrayList<>();
+        cens.add(nif1);
+        cens.add(nif2);
+        cens.add(nif3);
+        cens.add(nif4);
+        
+        partys.add(party1);
+        partys.add(party2);
+        partys.add(party3);
+        
+        VoteCounter vc = new VoteCounter(partys);
+        Serveis eO = new Serveis(cens);
+        
+        VotingKiosk vk = new VotingKiosk();
+        vk.setVoteCounter(vc);
+        vk.setElectoralOrganism(eO);
+        vk.setMailerService(eO);
+
+        vk.votingProcess(party3, nif4, address, false);        
+        vk.votingProcess(party2, nif4, address, false);       
+    }
+    
+    @Test /* Votar con biometric */
+    public void Test3() throws Exception{
         Party party1 = new Party("a");
         Party party2 = new Party("b");
         Party party3 = new Party("c");
@@ -81,23 +113,119 @@ public class VotingKioskTest {
         partys.add(party3);
         
         VoteCounter vc = new VoteCounter(partys);
-        Cens eO = new Cens(cens);
-        
+        Serveis eO = new Serveis(cens);
+        Biometric a = new Biometric();
+        a.setBiometric(11);
         VotingKiosk vk = new VotingKiosk();
+        vk.setBiometricSystem(a);
         vk.setVoteCounter(vc);
         vk.setElectoralOrganism(eO);
-        vk.setNIF(nif4);
-        vk.vote(party3);
-        vk.vote(party2);
+        vk.setMailerService(eO);
+        vk.votingProcess(party3, nif3, null, true);
+        System.out.println(vc.getTotal());
+    }
+    
+    @Test /* Votar con biometric con error de autentificacion */
+    public void Test4() throws Exception{
+        Party party1 = new Party("a");
+        Party party2 = new Party("b");
+        Party party3 = new Party("c");
         
-        vk.setNIF(nif3);
-        vk.vote(party3);          
+        Set<Party> partys = new HashSet<Party>();
+        NIF nif1 = new NIF("1");
+        NIF nif2 = new NIF("2");
+        NIF nif3 = new NIF("3");
+        NIF nif4 = new NIF("4");
+        
+        ArrayList<NIF> cens = new ArrayList<>();
+        cens.add(nif1);
+        cens.add(nif2);
+        cens.add(nif3);
+        cens.add(nif4);
+        
+        partys.add(party1);
+        partys.add(party2);
+        partys.add(party3);
+        
+        VoteCounter vc = new VoteCounter(partys);
+        Serveis eO = new Serveis(cens);
+        Biometric a = new Biometric();
+        a.setBiometric(101);
+        VotingKiosk vk = new VotingKiosk();
+        vk.setBiometricSystem(a);
+        vk.setVoteCounter(vc);
+        vk.setElectoralOrganism(eO);
+        vk.setMailerService(eO);
+        vk.votingProcess(party3, nif3, null, true);
+        System.out.println(vc.getTotal());
+    }
+    
+    @Test /* Votar con NIF pero no esta al cens  */
+    public void Test5() throws Exception{
+        Party party1 = new Party("a");
+        Party party2 = new Party("b");
+        Party party3 = new Party("c");
+        
+        Set<Party> partys = new HashSet<Party>();
+        NIF nif1 = new NIF("1");
+        NIF nif2 = new NIF("2");
+        NIF nif3 = new NIF("3");
+        NIF nif4 = new NIF("4");
+        
+        ArrayList<NIF> cens = new ArrayList<>();
+        cens.add(nif1);
+        cens.add(nif2);
+        cens.add(nif3);
+        
+        
+        partys.add(party1);
+        partys.add(party2);
+        partys.add(party3);
+        
+        VoteCounter vc = new VoteCounter(partys);
+        Serveis eO = new Serveis(cens);
+        Biometric a = new Biometric();
+        a.setBiometric(11);
+        VotingKiosk vk = new VotingKiosk();
+        vk.setBiometricSystem(a);
+        vk.setVoteCounter(vc);
+        vk.setElectoralOrganism(eO);
+        vk.setMailerService(eO);
+        vk.votingProcess(party3, nif4, null, false);
+    }
+    
+    @Test /* Votar con biometric con error del NIF no esta al cens */
+    public void Test6() throws Exception{
+        Party party1 = new Party("a");
+        Party party2 = new Party("b");
+        Party party3 = new Party("c");
+        
+        Set<Party> partys = new HashSet<Party>();
+        NIF nif1 = new NIF("1");
+        NIF nif2 = new NIF("2");
+        NIF nif3 = new NIF("3");
+        NIF nif4 = new NIF("4");
+        
+        ArrayList<NIF> cens = new ArrayList<>();
+        cens.add(nif1);
+        cens.add(nif2);
+        cens.add(nif3);
+        
+        partys.add(party1);
+        partys.add(party2);
+        partys.add(party3);
+        
+        VoteCounter vc = new VoteCounter(partys);
+        Serveis eO = new Serveis(cens);
+        Biometric a = new Biometric();
+        a.setBiometric(11);
+        VotingKiosk vk = new VotingKiosk();
+        vk.setBiometricSystem(a);
+        vk.setVoteCounter(vc);
+        vk.setElectoralOrganism(eO);
+        vk.setMailerService(eO);
+        vk.votingProcess(party3, nif4, null, true);
     }
 
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+  
 }
