@@ -24,7 +24,7 @@ public class NIFTest {
      
     }
     
-    @Test
+    @Test (expected = Exception.class)
     public void Test1() throws Exception{
         NIF nif1 = new NIF(null);
     }
