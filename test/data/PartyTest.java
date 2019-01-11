@@ -18,8 +18,8 @@ public class PartyTest {
     public PartyTest() throws Exception {
 
     }
-    
-    @Test
+     
+    @Test (expected = Exception.class)
     public void Test1() throws Exception{
         Party party1 = new Party(null);
     }
