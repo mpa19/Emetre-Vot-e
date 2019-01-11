@@ -18,7 +18,7 @@ public class DigitalSignatureTest {
     public DigitalSignatureTest() {
     }
     
-    @Test
+    @Test(expected = Exception.class)
     public void Test1() throws Exception{
         DigitalSignature digital1 = new DigitalSignature(null);
         digital1.getSignature();
