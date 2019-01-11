@@ -11,6 +11,7 @@ package data;
 **/
 final public class Party {
     private final String name;
+    
     public Party(String name) throws Exception {
         if(name == null){
            throw new Exception("name invalid");

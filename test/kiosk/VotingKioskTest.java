@@ -13,6 +13,7 @@ import data.Party;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
@@ -54,7 +55,7 @@ public class VotingKioskTest {
         vk.votingProcess(party3, nif3, null,false);  
     }
     
-    @Test /* VoteError intento de votar 2 veces */
+    @Test (expected = Exception.class) /* VoteError intento de votar 2 veces */
     public void Test2() throws Exception{
         Party party1 = new Party("a");
         Party party2 = new Party("b");
@@ -125,7 +126,7 @@ public class VotingKioskTest {
         System.out.println(vc.getTotal());
     }
     
-    @Test /* Votar con biometric con error de autentificacion */
+    @Test (expected = Exception.class)/* Votar con biometric con error de autentificacion */
     public void Test4() throws Exception{
         Party party1 = new Party("a");
         Party party2 = new Party("b");
@@ -160,7 +161,7 @@ public class VotingKioskTest {
         System.out.println(vc.getTotal());
     }
     
-    @Test /* Votar con NIF pero no esta al cens  */
+    @Test (expected = Exception.class)/* Votar con NIF pero no esta al cens  */
     public void Test5() throws Exception{
         Party party1 = new Party("a");
         Party party2 = new Party("b");
@@ -192,9 +193,10 @@ public class VotingKioskTest {
         vk.setElectoralOrganism(eO);
         vk.setMailerService(eO);
         vk.votingProcess(party3, nif4, null, false);
+        assertTrue(vk.email);
     }
     
-    @Test /* Votar con biometric con error del NIF no esta al cens */
+    @Test (expected = Exception.class)/* Votar con biometric con error del NIF no esta al cens */
     public void Test6() throws Exception{
         Party party1 = new Party("a");
         Party party2 = new Party("b");
@@ -226,6 +228,4 @@ public class VotingKioskTest {
         vk.setMailerService(eO);
         vk.votingProcess(party3, nif4, null, true);
     }
-
-  
 }

@@ -32,6 +32,6 @@ final public class MailAdress {
  
     @Override
     public String toString() {
-       return "MailAdress='" + mail + '\'' + '}';
+       return mail;
     }   
 }
