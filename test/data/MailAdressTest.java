@@ -24,7 +24,7 @@ public class MailAdressTest {
      
     }
     
-    @Test
+    @Test (expected = Exception.class)
     public void Test1() throws Exception{
         MailAdress mail1 = new MailAdress(null);
     }
